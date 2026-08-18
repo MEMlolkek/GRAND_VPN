@@ -1,0 +1,338 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_spinkit: ^5.2.0  # для анимации загрузки
+  animate_do: ^3.3.4       # для плавных анимаций
+  lottie: ^2.7.0          # если хотите Lottie-анимацию
+import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+void main() => runApp(const ClearQApp());
+
+class ClearQApp extends StatelessWidget {
+  const ClearQApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'ClearQ VPN',
+      theme: ThemeData.dark(),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+// ========== ЗАСТАВКА (ЭКРАН ВХОДА) ==========
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool _showMain = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Через 2.5 секунды переходим на главный экран
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() => _showMain = true);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF0F0C29), // темно-синий
+              Color(0xFF302B63), // фиолетовый
+              Color(0xFF24243E), // темный
+            ],
+          ),
+        ),
+        child: _showMain 
+            ? const MainScreen()  // главный экран
+            : _buildSplashContent(), // заставка
+      ),
+    );
+  }
+
+  Widget _buildSplashContent() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Анимированный логотип
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF6C63FF), Color(0xFF3F3D9E)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.5),
+                    blurRadius: 40,
+                    spreadRadius: 10,
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.vpn_key_rounded,
+                size: 60,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          // Название
+          FadeInUp(
+            duration: const Duration(milliseconds: 800),
+            child: const Text(
+              'ClearQ VPN',
+              style: TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 2,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          FadeInUp(
+            duration: const Duration(milliseconds: 900),
+            child: const Text(
+              'Быстрый • Бесплатный • Безопасный',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white70,
+                letterSpacing: 1,
+              ),
+            ),
+          ),
+          const SizedBox(height: 50),
+          // Индикатор загрузки (как в HAPP)
+          const SpinKitFadingCircle(
+            color: Colors.white,
+            size: 40,
+          ),
+          const SizedBox(height: 20),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1000),
+            child: const Text(
+              'Подключение к серверу...',
+              style: TextStyle(
+                color: Colors.white54,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ========== ГЛАВНЫЙ ЭКРАН (ПОСЛЕ ЗАСТАВКИ) ==========
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF0F0C29),
+              Color(0xFF302B63),
+              Color(0xFF24243E),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                // Шапка как в HAPP
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'ClearQ VPN',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade400.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.green.shade400, width: 1),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.circle, color: Colors.green, size: 10),
+                          SizedBox(width: 6),
+                          Text(
+                            'VIP',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
+                
+                // КРУГЛАЯ КНОПКА ПОДКЛЮЧЕНИЯ (как в HAPP)
+                FadeInUp(
+                  duration: const Duration(milliseconds: 600),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Здесь будет подключение к VPN
+                      _showConnectDialog(context);
+                    },
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF6C63FF),
+                            Color(0xFF3F3D9E),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.purple.withOpacity(0.5),
+                            blurRadius: 60,
+                            spreadRadius: 20,
+                          ),
+                        ],
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.power_settings_new,
+                            size: 60,
+                            color: Colors.white,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Подключиться',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            'Сервер: Авто',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 50),
+                
+                // Список серверов (краткий)
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _buildServerCard('🇷🇺 Россия', 'ping 12ms'),
+                      _buildServerCard('🇺🇸 США', 'ping 45ms'),
+                      _buildServerCard('🇯🇵 Япония', 'ping 89ms'),
+                      _buildServerCard('🇩🇪 Германия', 'ping 32ms'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildServerCard(String country, String ping) {
+    return Card(
+      color: Colors.white.withOpacity(0.05),
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.purple.shade300,
+          child: Text(country[0], style: const TextStyle(color: Colors.white)),
+        ),
+        title: Text(
+          country,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        ),
+        subtitle: Text(
+          ping,
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
+        ),
+        trailing: const Icon(Icons.check_circle, color: Colors.green, size: 20),
+      ),
+    );
+  }
+
+  void _showConnectDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E3A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('VPN подключен!', style: TextStyle(color: Colors.white)),
+        content: const Text(
+          'ClearQ VPN успешно подключен.\nВаши данные защищены.',
+          style: TextStyle(color: Colors.white70),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ОК', style: TextStyle(color: Colors.purple)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+flutter create clearq_vpn
+flutter run
