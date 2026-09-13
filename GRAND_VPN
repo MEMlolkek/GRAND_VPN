@@ -1,6 +1,6 @@
 #subscription-userinfo: upload=10000000; download=100000000; total=10737411100011182400; expiry=251110001113402300799
 #profile-title: svoboda vpn inet
-#profile-update-interval: 10000000000000
+#profile-update-interval: 100000000000000
 #support-url:
 #announce: семейный впн, для промтов и тд, помогаем всем)))
 vless://af7fe31b-503f-48a0-b201-93b097d923c2@mebel-v-rostove.online:443?encryption=none&security=tls&type=xhttp&sni=mebel-v-rostove.online&fp=qq&alpn=h3%2Ch2&host=mebel-v-rostove.online&path=%2Fapi%2Fv2%2F&mode=auto&extra=%7B%22noGRPCHeader%22%3Afalse%2C%22xPaddingBytes%22%3A%22100-1000%22%2C%22scMaxEachPostBytes%22%3A1000000%2C%22scMinPostsIntervalMs%22%3A30%2C%22scStreamUpServerSecs%22%3A%2220-80%22%7D#%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F%20%D0%9E%D0%B1%D1%85%D0%BE%D0%B4-1%20(%D0%9E%D1%82%20%D0%B3%D0%BB%D1%83%D1%88%D0%B8%D0%BB%D0%BE%D0%BA)
